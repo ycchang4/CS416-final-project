@@ -1,1 +1,47 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Change and Temperature Trends</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="scene-nav">
+        <div class="dot" onclick="scrollToSlide(0)"></div>
+        <div class="dot" onclick="scrollToSlide(1)"></div>
+        <div class="dot" onclick="scrollToSlide(2)"></div>
+        <div class="dot" onclick="scrollToSlide(3)"></div>
+    </nav>
+
+    <div class="container">
+        <div class="cover" data-slide="0">
+            <h2>Climate Change and Temperature Trends</h2>
+            <p>Explore the changes in global temperatures, CO2 emissions, and their impacts over the past century.</p>
+        </div>
+
+        <div class="slides slide2" data-slide="1">
+            <h2>Global Temperature Changes</h2>
+            <div class="chart" id="chart1"></div>
+        </div>
+
+        <div class="slides slide3" data-slide="2">
+            <h2>CO2 Emissions by Country</h2>
+            <div class="chart" id="chart2"></div>
+        </div>
+
+        <div class="slides slide4" data-slide="3">
+            <h2>Impact on Sea Levels</h2>
+            <div class="chart" id="chart3"></div>
+        </div>
+    </div>
+
+
+    
+
+ 
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
