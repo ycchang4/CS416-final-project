@@ -22,9 +22,6 @@
         .bar {
             fill: steelblue;
         }
-        .bar-selected {
-            fill: orange;
-        }
         .tooltip {
             position: absolute;
             text-align: center;
@@ -45,12 +42,7 @@
 <body>
     <div class="controls">
         <h2>CO2 Emission By Country</h2>
-        <select id = "region-select">
-            <option value="">Select a region</option>
-        </select>
-        <select id="country-select">
-            <option value="">Select a country</option>
-        </select>
+        
         <input type="number" id="top-n" placeholder="Top N countries" min="1" style="margin-left: 10px;">
         <button id="filter-button">Filter</button>
     </div>
@@ -71,6 +63,7 @@
             console.log(data);
             data.forEach(d => {
                 d.metric_tonnes_of_CO2 =+d.metric_tonnes_of_CO2.replace(/,/g, '');
+                d.name = d.name;
             });
 
             const x = d3.scaleBand()
@@ -121,65 +114,7 @@
 
             let initialData = data.sort((a, b) => a.ranking - b.ranking).slice(0, 10);
             update(initialData);
-            populateCountrySelect(data);
-            
 
-            function populateCountrySelect(data) {
-                const select = d3.select("#country-select");
-                select.selectAll("option")
-                    .data(data)
-                    .enter().append("option")
-                    .attr("value", d => d.name)
-                    .text(d => d.name);
-            }
-            
-            const selectRegion = d3.select('#region-select');
-            const uniqueRegions = Array.from(new Set(data.map(d => d.region)));
-            selectRegion.selectAll("option")
-                .data(uniqueRegions)
-                .enter().append("option")
-                .attr("value", d => d)
-                .text(d => d);
-            
-                d3.select("#region-select").on("change", function() {
-                const selectedRegion = this.value;
-                let filteredData = data;
-                if (selectedRegion) {
-                    filteredData = data.filter(d => d.region === selectedRegion);
-                }
-                const topN = +d3.select("#top-n").property("value");
-                if (!isNaN(topN) && topN > 0) {
-                    filteredData = filteredData.sort((a, b) => a.ranking - b.ranking).slice(0, topN);
-                }
-                update(filteredData);
-                populateCountrySelect(filteredData);
-            });
-
-
-
-            // Populate select options
-            const select = d3.select("#country-select");
-            select.selectAll("option")
-                .data(data)
-                .enter().append("option")
-                .attr("value", d => d.name)
-                .text(d => d.name);
-
-            select.on("change", function() {
-                const selectedCountry = select.property("value");
-                if (selectedCountry) {
-                    const countryData = data.find(d => d.name === selectedCountry);
-                    g.selectAll(".bar-selected").remove();
-                    g.append("rect")
-                        .attr("class", "bar-selected")
-                        .attr("x", x(countryData.name))
-                        .attr("y", y(countryData.metric_tonnes_of_CO2))
-                        .attr("width", x.bandwidth())
-                        .attr("height", height - y(countryData.metric_tonnes_of_CO2));
-                } else {
-                    g.selectAll(".bar-selected").remove();
-                }
-            });
 
             // Filter button event
             d3.select("#filter-button").on("click", function() {
@@ -188,7 +123,7 @@
                     const filteredData = data.sort((a, b) => a.ranking - b.ranking).slice(0, topN);
                     update(filteredData);
                 } else {
-                    update(data); // Reset to all data if the input is invalid
+                    update(data); 
                 }
             });
         }).catch(error => {
