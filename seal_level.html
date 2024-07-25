@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mean Sea Level Graph</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>  
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            background: url(images/arctic_background.jpg)
+        }
+        .graph-container {
+            text-align: center;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .annotation {
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="graph-container">
+        <h2>Mean Seal Level Graph</h2>
+        <div id="graph"></div>
+    </div>
+    <div class="tooltip"></div>
+
+    <script> </script>
+</body>
+</html>
