@@ -19,6 +19,9 @@
             flex-direction: column;
             align-items: center;
         }
+        .barSelect {
+            fill: orange !important;
+        }
         .bar {
             fill: steelblue;
         }
@@ -62,7 +65,7 @@
         d3.csv("data/Carbon_dioxide_emissions.csv").then(data => {
             console.log(data);
             data.forEach(d => {
-                d.metric_tonnes_of_CO2 =+d.metric_tonnes_of_CO2.replace(/,/g, '');
+                d.metric_tonnes_of_CO2 = +d.metric_tonnes_of_CO2.replace(/,/g, '');
                 d.name = d.name;
             });
 
@@ -90,12 +93,14 @@
                     .attr("width", x.bandwidth())
                     .attr("height", d => height - y(d.metric_tonnes_of_CO2))
                     .on("mouseover", function(event, d) {
+                        d3.select(this).classed("barSelect", true);
                         tooltip.transition().duration(200).style("opacity", .9);
                         tooltip.html(`Country: ${d.name}<br>CO2 Emissions: ${d.metric_tonnes_of_CO2}<br>Year: ${d.date_of_information}<br>Region: ${d.region}`)
                             .style("left", (event.pageX + 5) + "px")
                             .style("top", (event.pageY - 28) + "px");
                     })
                     .on("mouseout", function(d) {
+                        d3.select(this).classed("barSelect", false);
                         tooltip.transition().duration(500).style("opacity", 0);
                     });
 
@@ -114,7 +119,6 @@
 
             let initialData = data.sort((a, b) => a.ranking - b.ranking).slice(0, 10);
             update(initialData);
-
 
             // Filter button event
             d3.select("#filter-button").on("click", function() {
