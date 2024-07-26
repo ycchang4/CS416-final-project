@@ -13,8 +13,15 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            background: url(images/arctic_background.jpg)
+            background: url(images/arctic.jpg);
         }
+        rect{
+            pointer-events: all;
+            fill-opacity: 0;
+            stroke-opacity: 0;
+            z-index: 1;
+        }
+
         .graph-container {
             text-align: center;
         }
@@ -34,12 +41,13 @@
     </style>
 </head>
 <body>
-    <div class="graph-container">
-        <h2>Mean Seal Level Graph</h2>
-        <div id="graph"></div>
+    <div id="chart-container">
+        <h2>Mean Sea Level Globally</h2>
     </div>
-    <div class="tooltip"></div>
+    <div id = "slider-range"></div>
 
-    <script> </script>
+    <script src="https://d3js.org/d3.v7.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.js"></script>
+    <script src="JavaScript/seaLevel.js"></script>
 </body>
 </html>
