@@ -71,7 +71,7 @@
 
         const tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
-        d3.csv("data/Carbon_dioxide_emissions.csv").then(data => {
+        d3.csv("data/carbon_dioxide_emissions.csv").then(data => {
             console.log(data);
             data.forEach(d => {
                 d.metric_tonnes_of_CO2 = +d.metric_tonnes_of_CO2.replace(/,/g, '');
