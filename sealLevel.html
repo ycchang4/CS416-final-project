@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Mean Sea Level Graph</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>  
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             display: flex;
@@ -24,6 +25,7 @@
 
         .chart-container {
             text-align: center;
+            position: relative;
         }
         .tooltip {
             position: absolute;
@@ -40,6 +42,16 @@
             font-size: 12px;
             font-weight: bold;
         }
+
+        #slider-range {
+            position: absolute;
+            left: 60vw; /* 60% of the viewport width */
+            top: 23vh; 
+            transform: translate(-50%, -50%); 
+            z-index: 2; 
+        }
+
+
     </style>
 </head>
 <body>
@@ -50,6 +62,12 @@
 
     <script src="https://d3js.org/d3.v7.min.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.js"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
     <script src="../JavaScript/seaLevel.js"></script>
+
+    <div class="nav-buttons">
+        <a href="temperature.html" class="button">Back</a>
+        <a href="CO2_emission.html" class="button">Next</a>
+    </div>
 </body>
 </html>

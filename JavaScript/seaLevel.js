@@ -22,6 +22,8 @@ const tooltip = d3.select("body")
 .append("div")
 .attr("class", "tooltip");
 
+
+
 d3.csv("data/sea_level.csv").then(data => {
     console.log("raw data", data);
     
@@ -39,6 +41,7 @@ d3.csv("data/sea_level.csv").then(data => {
 
     //add x axis and y axis
     svg.append("g")
+        .attr("class", "x-axis")
         .attr("transform", `translate(0,${height})`)
         .attr("stroke-width", 1)
         .style("font-size", "15px")
@@ -46,6 +49,7 @@ d3.csv("data/sea_level.csv").then(data => {
             .ticks(d3.timeYear.every(5)));
 
     svg.append("g")
+        .attr("class", "y-axis")
         .attr("stroke-width", 1)
         .call(d3.axisLeft(y))
         .selectAll("text")
@@ -58,6 +62,7 @@ d3.csv("data/sea_level.csv").then(data => {
 
     //Add line to the grap
     svg.append("path")
+    .attr("class", "line")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "steelblue")
@@ -69,6 +74,7 @@ d3.csv("data/sea_level.csv").then(data => {
         .x(d => x(d.time))
         .y(d => y(d.trend));
     svg.append("path")
+        .attr("class", "lineTrend")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "steelblue")
@@ -138,6 +144,58 @@ d3.csv("data/sea_level.csv").then(data => {
         });
         const formatTime = d3.timeFormat("%B %d, %Y");
 
+    const sliderRange = d3
+    .sliderBottom()
+    .min(d3.min(data, d => d.time))
+    .max(d3.max(data, d => d.time))
+    .width(300)
+    .tickFormat(d3.timeFormat('%Y-%m-%d'))
+    .ticks(3)
+    .default([d3.min(data, d => d.time), d3.max(data, d => d.time)])
+    .fill('steelblue')
+    .on('onchange', val => {
+        x.domain(val);
+ 
+
+        // Filter data based on slider values
+        const filteredData = data.filter(d => d.time >= val[0] && d.time <= val[1]);
+
+
+        // Update all the lines
+        svg.select(".line").attr("d", line(filteredData));
+        svg.select(".lineTrend").attr("d", lineTrend(filteredData));
+
+        // Set the y domain
+        y.domain([0, d3.max(filteredData, d => d.sea_level)]);
+
+        // Update the x-axis with new domain
+    svg.select(".x-axis")
+      .transition()
+      .duration(300) // transition duration in ms
+      .call(d3.axisBottom(x)
+        .tickValues(x.ticks(d3.timeYear.every(5)))
+        .tickFormat(d3.timeFormat("%Y")));
+
+    // Update the y-axis with new domain
+    svg.select(".y-axis")
+      .transition()
+      .duration(300) // transition duration in ms
+      .call(d3.axisLeft(y)
+        .ticks(10));
+
+        d3.select(".annotation-group").remove();
+    });
+
+    const gRange = d3 
+        .select('#slider-range')
+        .append('svg')
+        .attr('width', 500)
+        .attr('height',100)
+        .append('g')
+        .attr("transform", 'translate(150, 50)');
+
+        gRange.call(sliderRange);
+
     // Add annotation 
     const annotations = [
         {
@@ -152,19 +210,24 @@ d3.csv("data/sea_level.csv").then(data => {
                 type: "elbow",
                 end: "dot" 
             },
-            color: ["black"],
+            color: ["#2c3e50"],
             x: width - 350, 
             y: 150, 
             dy: -50, 
             dx: -50 
         }
     ];
+    
 
+  
     // Create annotation object + add to SVG
     const makeAnnotations = d3.annotation()
         .annotations(annotations);
 
+ 
     svg.append("g")
         .attr("class", "annotation-group")
         .call(makeAnnotations);
+
+
 });

@@ -24,7 +24,6 @@ const tooltip = d3.select("body")
 
 // Parse the Data
 d3.csv("data/data.csv").then(data => {
-    console.log("Raw Data:", data); // Log the raw data
 
     // Format the data
     data.forEach(d => {
@@ -32,7 +31,6 @@ d3.csv("data/data.csv").then(data => {
         d.Anomaly = +d.Anomaly;
     });
 
-    console.log("Parsed Data:", data); // Log the parsed data
 
     // Add X axis
     const x = d3.scaleLinear()
@@ -84,14 +82,14 @@ d3.csv("data/data.csv").then(data => {
             note: {
                 label: "Base Period: 1901-2000",
                 align: "right", 
-                wrap: 200, 
+                wrap: 180, 
                 padding: 10  
             },
             connector: {
                 type: "elbow",
                 end: "dot" 
             },
-            color: ["black"],
+            color: ["#2c3e50"],
             x: width - 350, 
             y: 150, 
             dy: -50, 
