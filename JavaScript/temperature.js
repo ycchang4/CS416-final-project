@@ -1,7 +1,7 @@
 //Set dimensions and margins for the chart
-const margin = {top: 20, right: 30, bottom: 40, left: 50};
-const width = 800 - margin.left - margin.right;
-const height = 400 - margin.top - margin.bottom;
+const margin = {top: 20, right:20, bottom: 40, left: 60};
+const width = 1000 - margin.left - margin.right;
+const height = 500 - margin.top - margin.bottom;
 
 //set up the x and y scale
 const x = d3.scaleTime().range([0, width]);
@@ -22,19 +22,23 @@ const tooltip = d3.select("body")
 
 
 
+const parseTime = d3.timeParse("%Y");
+
+
 // Parse the Data
 d3.csv("data/data.csv").then(data => {
+    console.log("data", data);
 
     // Format the data
     data.forEach(d => {
-        d.Year = +d.Year;
+        d.Year = parseTime(d.Year);
         d.Anomaly = +d.Anomaly;
     });
 
 
     // Add X axis
-    const x = d3.scaleLinear()
-        .domain([d3.min(data, d => d.Year) - 1, d3.max(data, d => d.Year) + 1])
+    const x = d3.scaleTime()
+        .domain(d3.extent(data, d => d.Year))
         .range([0, width]);
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
@@ -52,6 +56,8 @@ d3.csv("data/data.csv").then(data => {
     // Add tooltip
     const tooltip = d3.select(".tooltip");
 
+    const formatTime = d3.timeFormat("%Y");
+
     // Add dots
     svg.append('g')
         .selectAll("dot")
@@ -66,7 +72,7 @@ d3.csv("data/data.csv").then(data => {
             tooltip.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltip.html(`Year: ${d.Year}<br>Anomaly: ${d.Anomaly}`)
+            tooltip.html(`Year: ${formatTime(d.Year)}<br>Anomaly: ${d.Anomaly}`)
                 .style("left", (event.pageX + 5) + "px")
                 .style("top", (event.pageY - 28) + "px");
         })
@@ -90,8 +96,8 @@ d3.csv("data/data.csv").then(data => {
                 end: "dot" 
             },
             color: ["#2c3e50"],
-            x: width - 350, 
-            y: 150, 
+            x: width -550, 
+            y: 270, 
             dy: -50, 
             dx: -50 
         }
@@ -108,9 +114,9 @@ d3.csv("data/data.csv").then(data => {
     //add source
     svg.append("text")
         .attr("class", "source-credit")
-        .attr("x", width - 750)
+        .attr("x", width - 920)
         .attr("y", height + margin.bottom -3)
-        .style("font-size", "9px")
+        .style("font-size", "12px")
         .style("font-family", "sans-serif")
         .text("Source: https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series");
 
