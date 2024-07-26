@@ -13,6 +13,7 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            background: url(images/arctic.jpg);
         }
         .chart {
             display: flex;
@@ -28,14 +29,14 @@
         .tooltip {
             position: absolute;
             text-align: center;
-            width: auto;
-            height: auto;
-            padding: 5px;
+            padding: 6px;
             font: 12px sans-serif;
-            background: lightgrey;
-            border: 0px;
+            background: lightsteelblue;
+            border: 0;
             border-radius: 8px;
             pointer-events: none;
+            opacity: 0;
+        }
         }
         .controls {
             margin: 10px 0;
@@ -44,7 +45,7 @@
 </head>
 <body>
     <div class="controls">
-        <h2>CO2 Emission By Country</h2>
+        <h2>CO2 Emission By Country in 2022</h2>
         
         <input type="number" id="top-n" placeholder="Top N countries" min="1" style="margin-left: 10px;">
         <button id="filter-button">Filter</button>
@@ -110,7 +111,8 @@
                     .call(d3.axisBottom(x))
                     .selectAll("text")
                     .attr("transform", "rotate(-45)")
-                    .style("text-anchor", "end");
+                    .style("text-anchor", "end")
+                    .style("font-size", "14px");
 
                 g.append("g")
                     .attr("class", "axis axis-y")
@@ -130,6 +132,8 @@
                     update(data); 
                 }
             });
+            
+            
         }).catch(error => {
             console.error('Error loading or parsing CSV file:', error);
         });

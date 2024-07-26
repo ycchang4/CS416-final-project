@@ -40,13 +40,13 @@ d3.csv("data/sea_level.csv").then(data => {
     //add x axis and y axis
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 1)
         .style("font-size", "15px")
         .call(d3.axisBottom(x)
             .ticks(d3.timeYear.every(5)));
 
     svg.append("g")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 1)
         .call(d3.axisLeft(y))
         .selectAll("text")
         .style("font-size", "15px");

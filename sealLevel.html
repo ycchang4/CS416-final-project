@@ -22,17 +22,19 @@
             z-index: 1;
         }
 
-        .graph-container {
+        .chart-container {
             text-align: center;
         }
         .tooltip {
             position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 5px;
+            text-align: center;
+            padding: 6px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0;
+            border-radius: 8px;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.2s;
         }
         .annotation {
             font-size: 12px;
@@ -48,6 +50,6 @@
 
     <script src="https://d3js.org/d3.v7.min.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.js"></script>
-    <script src="JavaScript/seaLevel.js"></script>
+    <script src="../JavaScript/seaLevel.js"></script>
 </body>
 </html>
