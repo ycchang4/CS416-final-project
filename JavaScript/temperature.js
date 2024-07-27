@@ -1,8 +1,7 @@
 //Set dimensions and margins for the chart
-const margin = {top: 20, right:20, bottom: 40, left: 60};
-const width = 1000 - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
-
+const margin = {top: 20, right:30, bottom: 40, left: 50};
+const width = 800 - margin.left - margin.right;
+const height =  400- margin.top - margin.bottom;
 //set up the x and y scale
 const x = d3.scaleTime().range([0, width]);
 const y = d3.scaleLinear().range([height, 0]);
@@ -96,8 +95,8 @@ d3.csv("data/data.csv").then(data => {
                 end: "dot" 
             },
             color: ["#2c3e50"],
-            x: width -550, 
-            y: 270, 
+            x: width -280, 
+            y: 180, 
             dy: -50, 
             dx: -50 
         }
