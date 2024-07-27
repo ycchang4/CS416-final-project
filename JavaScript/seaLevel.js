@@ -97,7 +97,7 @@ d3.csv("data/sea_level.csv").then(data => {
     //add source
     svg.append("text")
         .attr("class", "source-credit")
-        .attr("x", width - 920)
+        .attr("x", width - 720)
         .attr("y", height + margin.bottom -3)
         .style("font-size", "12px")
         .style("font-family", "sans-serif")

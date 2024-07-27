@@ -46,6 +46,9 @@
             text-align: center;
             position: relative;
         }
+        .h2{
+            text-align: left;
+        }
 
     </style>
 </head>
@@ -59,7 +62,7 @@
         <button id="filter-button">Filter</button>
     </div>
     <div class="chart">
-        <svg width="1000" height="600"></svg>
+        <svg width="800" height="400"></svg>
     </div>
 
     <div class="nav-buttons">
@@ -70,7 +73,7 @@
 
     <script>
         const svg = d3.select("svg");
-        const margin = {top: 20, right: 30, bottom: 150, left: 80};
+        const margin = {top: 20, right: 30, bottom: 40, left: 50};
         const width = svg.attr("width") - margin.left - margin.right;
         const height = svg.attr("height") - margin.top - margin.bottom;
         const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
