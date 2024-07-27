@@ -73,7 +73,7 @@
 
     <script>
         const svg = d3.select("svg");
-        const margin = {top: 20, right: 30, bottom: 40, left: 50};
+        const margin = {top: 20, right: 30, bottom: 40, left: 90};
         const width = svg.attr("width") - margin.left - margin.right;
         const height = svg.attr("height") - margin.top - margin.bottom;
         const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
@@ -149,7 +149,8 @@
                     update(data); 
                 }
             });
-            
+
+
             
         }).catch(error => {
             console.error('Error loading or parsing CSV file:', error);
