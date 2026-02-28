@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mean Sea Level Graph</title>
-    <script src="https://d3js.org/d3.v6.min.js"></script>  
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            background: url(images/arctic.jpg);
+            padding: 0 20px 80px;
+            overflow: hidden;
         }
-        rect{
+
+        rect {
             pointer-events: all;
             fill-opacity: 0;
             stroke-opacity: 0;
@@ -26,48 +26,94 @@
         .chart-container {
             text-align: center;
             position: relative;
+            padding: 16px 16px 10px;
+            max-width: 820px;
+            width: 100%;
+            background: rgba(10, 25, 50, 0.72);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        .chart-container h2 {
+            font-size: 1.4rem;
+            color: #fff;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        #slider-range {
+            margin-bottom: 4px;
+        }
+
+        /* style the d3 slider to match theme */
+        #slider-range .parameter-value text,
+        #slider-range .tick text {
+            fill: #dce8f5 !important;
+            font-size: 11px;
+        }
+
+        #slider-range .track,
+        #slider-range .track-inset {
+            stroke: rgba(255,255,255,0.2) !important;
+        }
+
         .tooltip {
             position: absolute;
             text-align: center;
-            padding: 6px;
-            font: 12px sans-serif;
-            background: lightsteelblue;
-            border: 0;
-            border-radius: 8px;
+            padding: 10px 14px;
+            font: 13px 'Segoe UI', sans-serif;
+            background: rgba(10, 30, 60, 0.88);
+            color: #e8f4fd;
+            border: 1px solid rgba(100, 180, 255, 0.3);
+            border-radius: 10px;
             pointer-events: none;
             opacity: 0;
+            line-height: 1.6;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.15s;
         }
-        .annotation {
+
+        .annotation text {
+            fill: #e8f4fd !important;
             font-size: 12px;
             font-weight: bold;
         }
 
-        #slider-range {
-            position: absolute;
-            left: 70%; 
-            top: 20%; 
-            transform: translate(-50%, -50%); 
-            z-index: 2; 
+        .annotation path {
+            stroke: #e8f4fd !important;
         }
 
+        .axis text {
+            fill: #dce8f5;
+            font-size: 12px;
+        }
 
+        .axis path,
+        .axis line {
+            stroke: rgba(255, 255, 255, 0.3);
+        }
     </style>
 </head>
 <body>
-    <div id="chart-container">
-        <h2>Mean Sea Level Globally</h2>
-    </div>
-    <div id = "slider-range"></div>
+<div id="chart-container" class="chart-container">
+    <h2>Mean Sea Level Globally</h2>
+    <div id="slider-range"></div>
+</div>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.js"></script>
-    <script src="https://unpkg.com/d3-simple-slider"></script>
-    <script src="JavaScript/seaLevel.js"></script>
+<div class="nav-buttons">
+    <a href="temperature.html" class="button">← Back</a>
+    <a href="CO2_emission.html" class="button">Next →</a>
+</div>
 
-    <div class="nav-buttons">
-        <a href="temperature.html" class="button">Back</a>
-        <a href="CO2_emission.html" class="button">Next</a>
-    </div>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="JavaScript/seaLevel.js"></script>
 </body>
 </html>

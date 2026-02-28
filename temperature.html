@@ -2,61 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Global Land and Ocean June Average Temperature Anomalies</title>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Anomalies</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            background: url(images/arctic.jpg);
-            
+            padding: 0 20px 80px;
+            overflow: hidden;
         }
 
         .chart-container {
             text-align: center;
+            padding: 16px 16px 10px;
+            max-width: 860px;
+            width: 100%;
+            background: rgba(10, 25, 50, 0.72);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        svg {
-            display: block;
-            margin: 0 auto;
-        }
-
-        .dot{
-            fill:steelblue;
-            stroke: #f0f0f0;
+        .chart-container h2 {
+            font-size: 1.4rem;
+            color: #fff;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
         }
 
         .tooltip {
             position: absolute;
             text-align: center;
-            padding: 6px;
-            font: 12px sans-serif;
-            background: lightsteelblue;
-            border: 0;
-            border-radius: 8px;
+            padding: 10px 14px;
+            font: 13px 'Segoe UI', sans-serif;
+            background: rgba(10, 30, 60, 0.88);
+            color: #e8f4fd;
+            border: 1px solid rgba(100, 180, 255, 0.3);
+            border-radius: 10px;
             pointer-events: none;
             opacity: 0;
+            line-height: 1.6;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.15s;
+        }
+
+        .annotation text {
+            fill: #e8f4fd !important;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .annotation path {
+            stroke: #e8f4fd !important;
         }
     </style>
 </head>
 <body>
-    <div id="chart-container">
-        <h2>Global Land and Ocean June Average Temperature Anomalies</h2>
-    </div>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.js"></script>
-    <script src="JavaScript/temperature.js"></script>
+<div id="chart-container" class="chart-container">
+    <h2>Global Land and Ocean June Average Temperature Anomalies</h2>
+</div>
 
-    <div class="nav-buttons">
-        <a href="index.html" class="button">Back</a>
-        <a href="sealLevel.html" class="button">Next</a>
-    </div>
+<div class="nav-buttons">
+    <a href="index.html" class="button">← Back</a>
+    <a href="sealLevel.html" class="button">Next →</a>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.js"></script>
+<script src="JavaScript/temperature.js"></script>
 </body>
 </html>

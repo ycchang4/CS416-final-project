@@ -5,48 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Climate Insight</title>
     <link rel="stylesheet" href="styles.css">
-
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 0 20px 80px;
+            overflow: hidden;
+        }
+
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
+            max-width: 700px;
+            width: 100%;
+            padding: 40px 36px;
             text-align: center;
-  
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: rgba(10, 25, 50, 0.72);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
         }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
+
+        .container h1 {
+            font-size: 1.6rem;
+            color: #fff;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
         }
-        h2 {
-            text-align: center;
-            color: #34495e;
+
+        .container h2 {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #dce8f5;
+            margin-bottom: 24px;
         }
-        p {
-            text-align: center;
-            line-height: 1.6;
-            color: #34495e;
+
+        .container p {
+            font-size: 0.95rem;
+            color: #dce8f5;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            text-align: left;
         }
-        
+
+        .container em {
+            color: rgba(220, 232, 245, 0.65);
+            font-size: 0.9rem;
+        }
     </style>
-    
 </head>
 <body>
-    <div class=".container">
-        <h1>Global Climate Insights: Temperature Anomalies, Change in Sea Level, and CO2 Emission</h1>
-        <h2>In this presentation, we will explore three critical aspects of our planet's changing environment.</h2>
-        <p>1. Global Land and Ocean June Average Temperature Anomalies: This graph will help us understand </p>
-        <p>how global temperatures have deviated from historical averages, illustrating the warming trend over time</p>
-        <p>2. Sea Level Change: This graph shows how sea level has changed over time. </p>
-        <p>3. CO2 Emissions by Country in 2022: We'll examine the top contributors to global CO2 emissions</p>
-        <p>Note: Users can hover over an interesting data point to see more details. </p>
-        
-    </div>
 
-    <div class="nav-buttons">
-        <a href="temperature.html" class="button">Next</a>
-    </div>
+<div class="container">
+    <h1>Global Climate Insights: Temperature Anomalies, Change in Sea Level, and CO2 Emissions</h1>
+    <h2>In this presentation, we will explore three critical aspects of our planet's changing environment.</h2>
+    <p>1. <strong>Global Land and Ocean June Average Temperature Anomalies:</strong> This graph will help us understand how global temperatures have deviated from historical averages, illustrating the warming trend over time.</p>
+    <p>2. <strong>Sea Level Change:</strong> This graph shows how sea level has changed over time.</p>
+    <p>3. <strong>CO2 Emissions by Country in 2022:</strong> We'll examine the top contributors to global CO2 emissions.</p>
+    <p><em>Note: Hover over any data point to see more details.</em></p>
+</div>
+
+<div class="nav-buttons">
+    <a href="temperature.html" class="button">Next →</a>
+</div>
 
 </body>
 </html>

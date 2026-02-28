@@ -6,155 +6,242 @@
     <title>CO2 Emission Bar Chart</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <!-- override nav buttons to match page style -->
+
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 40px 20px 100px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: url(images/arctic.jpg) center/cover no-repeat fixed;
+        }
 
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: url(images/arctic.jpg);
+        /* frosted glass card */
+        .glass {
+            background: rgba(10, 25, 50, 0.72);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
         }
-        .chart {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .barSelect {
-            fill: orange !important;
-        }
-        .bar {
-            fill: steelblue;
-        }
-        .tooltip {
-            position: absolute;
-            text-align: center;
-            padding: 6px;
-            font: 12px sans-serif;
-            background: lightsteelblue;
-            border: 0;
-            border-radius: 8px;
-            pointer-events: none;
-            opacity: 0;
-        }
+
         .controls {
             text-align: center;
-        }
-        .chart-container {
-            text-align: center;
-            position: relative;
-        }
-        .h2{
-            text-align: left;
+            padding: 24px 32px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 860px;
         }
 
+        .controls h2 {
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .controls input {
+            padding: 8px 14px;
+            font-size: 14px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+            outline: none;
+            margin-right: 10px;
+            width: 180px;
+        }
+
+        .controls input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .controls button {
+            padding: 8px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.1s;
+        }
+
+        .controls button:hover {
+            background: rgba(255,165,0,0.7);
+            transform: translateY(-1px);
+        }
+
+        .chart {
+            padding: 24px 16px 16px;
+            max-width: 860px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 10px 14px;
+            font: 13px 'Segoe UI', sans-serif;
+            background: rgba(10, 30, 60, 0.88);
+            color: #e8f4fd;
+            border: 1px solid rgba(100,180,255,0.3);
+            border-radius: 10px;
+            pointer-events: none;
+            opacity: 0;
+            line-height: 1.6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: opacity 0.15s;
+        }
+
+        .nav-buttons .button {
+            background: rgba(10, 25, 50, 0.72) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            color: #fff !important;
+            border-radius: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            transition: background 0.25s, transform 0.1s;
+        }
+
+        .nav-buttons .button:hover {
+            background: rgba(249, 115, 22, 0.75) !important;
+            transform: translateY(-2px);
+        }
+
+        .axis text {
+            fill: #dce8f5;
+            font-size: 12px;
+        }
+
+        .axis path,
+        .axis line {
+            stroke: rgba(255,255,255,0.3);
+        }
     </style>
 </head>
 <body>
-    
 
-    <div class="controls">
-        <h2>CO2 Emission By Country in 2022</h2>
-        
-        <input type="number" id="top-n" placeholder="Top N countries" min="1" style="margin-left: 10px;">
-        <button id="filter-button">Filter</button>
-    </div>
-    <div class="chart">
-        <svg width="800" height="400"></svg>
-    </div>
+<div class="controls glass">
+    <h2>CO2 Emissions By Country in 2022</h2>
+    <input type="number" id="top-n" placeholder="Top N countries" min="1">
+    <button id="filter-button">Filter</button>
+</div>
 
-    <div class="nav-buttons">
-        <a href="sealLevel.html" class="button">Back</a>
-        <a href="conclusion.html" class="button">Next</a>
+<div class="chart glass">
+    <svg id="chart-svg" width="820" height="420"></svg>
+</div>
 
-    </div>
+<div class="nav-buttons">
+    <a href="sealLevel.html" class="button">← Back</a>
+    <a href="conclusion.html" class="button">Next →</a>
+</div>
 
-    <script>
-        const svg = d3.select("svg");
-        const margin = {top: 20, right: 30, bottom: 40, left: 90};
-        const width = svg.attr("width") - margin.left - margin.right;
-        const height = svg.attr("height") - margin.top - margin.bottom;
-        const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+<div class="tooltip"></div>
 
-        const tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+<script>
+    const svg = d3.select("#chart-svg");
+    const margin = { top: 20, right: 30, bottom: 110, left: 70 };
+    const width = +svg.attr("width") - margin.left - margin.right;
+    const height = +svg.attr("height") - margin.top - margin.bottom;
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-        d3.csv("data/carbon_dioxide_emissions.csv").then(data => {
-            console.log(data);
-            data.forEach(d => {
-                d.metric_tonnes_of_CO2 = +d.metric_tonnes_of_CO2.replace(/,/g, '');
-                d.name = d.name;
-            });
+    // gradient definition
+    const defs = svg.append("defs");
+    const grad = defs.append("linearGradient")
+        .attr("id", "barGrad")
+        .attr("x1", "0").attr("y1", "0")
+        .attr("x2", "0").attr("y2", "1");
+    grad.append("stop").attr("offset", "0%").attr("stop-color", "#f97316");
+    grad.append("stop").attr("offset", "100%").attr("stop-color", "#3b82f6");
 
-            const x = d3.scaleBand()
-                .range([0, width])
-                .padding(0.1);
+    const tooltip = d3.select(".tooltip");
 
-            const y = d3.scaleLinear()
-                .range([height, 0]);
-
-            function update(data) {
-                x.domain(data.map(d => d.name));
-                y.domain([0, d3.max(data, d => d.metric_tonnes_of_CO2)]);
-
-                g.selectAll(".bar").remove();
-                g.selectAll(".axis").remove();
-
-                g.append("g")
-                    .selectAll(".bar")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("class", "bar")
-                    .attr("x", d => x(d.name))
-                    .attr("y", d => y(d.metric_tonnes_of_CO2))
-                    .attr("width", x.bandwidth())
-                    .attr("height", d => height - y(d.metric_tonnes_of_CO2))
-                    .on("mouseover", function(event, d) {
-                        d3.select(this).classed("barSelect", true);
-                        tooltip.transition().duration(200).style("opacity", .9);
-                        tooltip.html(`Country: ${d.name}<br>CO2 Emissions: ${d.metric_tonnes_of_CO2}<br>Year: ${d.date_of_information}<br>Region: ${d.region}`)
-                            .style("left", (event.pageX + 5) + "px")
-                            .style("top", (event.pageY - 28) + "px");
-                    })
-                    .on("mouseout", function(d) {
-                        d3.select(this).classed("barSelect", false);
-                        tooltip.transition().duration(500).style("opacity", 0);
-                    });
-
-                g.append("g")
-                    .attr("class", "axis axis-x")
-                    .attr("transform", `translate(0,${height})`)
-                    .call(d3.axisBottom(x))
-                    .selectAll("text")
-                    .attr("transform", "rotate(-45)")
-                    .style("text-anchor", "end")
-                    .style("font-size", "14px");
-
-                g.append("g")
-                    .attr("class", "axis axis-y")
-                    .call(d3.axisLeft(y));
-            }
-
-            let initialData = data.sort((a, b) => a.ranking - b.ranking).slice(0, 10);
-            update(initialData);
-
-            // Filter button event
-            d3.select("#filter-button").on("click", function() {
-                const topN = +d3.select("#top-n").property("value");
-                if (!isNaN(topN) && topN > 0) {
-                    const filteredData = data.sort((a, b) => a.ranking - b.ranking).slice(0, topN);
-                    update(filteredData);
-                } else {
-                    update(data); 
-                }
-            });
-
-
-            
-        }).catch(error => {
-            console.error('Error loading or parsing CSV file:', error);
+    d3.csv("data/carbon_dioxide_emissions.csv").then(data => {
+        data.forEach(d => {
+            d.metric_tonnes_of_CO2 = +d.metric_tonnes_of_CO2.replace(/,/g, '');
         });
-    </script>
+
+        const x = d3.scaleBand().range([0, width]).padding(0.25);
+        const y = d3.scaleLinear().range([height, 0]);
+
+        function update(filtered) {
+            x.domain(filtered.map(d => d.name));
+            y.domain([0, d3.max(filtered, d => d.metric_tonnes_of_CO2) * 1.08]);
+
+            g.selectAll(".bar").remove();
+            g.selectAll(".axis").remove();
+
+            // bars
+            g.selectAll(".bar")
+                .data(filtered)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", d => x(d.name))
+                .attr("width", x.bandwidth())
+                .attr("y", height)
+                .attr("height", 0)
+                .attr("rx", 4)
+                .attr("fill", "url(#barGrad)")
+                .attr("opacity", 0.85)
+                .on("mouseover", function(event, d) {
+                    d3.select(this).attr("opacity", 1).attr("filter", "brightness(1.2)");
+                    tooltip.style("opacity", 1)
+                        .html(`<strong>${d.name}</strong><br>CO2: ${d.metric_tonnes_of_CO2.toLocaleString()} MT<br>Year: ${d.date_of_information}<br>Region: ${d.region}`)
+                        .style("left", (event.pageX + 12) + "px")
+                        .style("top", (event.pageY - 40) + "px");
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("left", (event.pageX + 12) + "px")
+                        .style("top", (event.pageY - 40) + "px");
+                })
+                .on("mouseout", function() {
+                    d3.select(this).attr("opacity", 0.85).attr("filter", null);
+                    tooltip.style("opacity", 0);
+                })
+                .transition().duration(600).ease(d3.easeCubicOut)
+                .attr("y", d => y(d.metric_tonnes_of_CO2))
+                .attr("height", d => height - y(d.metric_tonnes_of_CO2));
+
+            // x axis
+            g.append("g")
+                .attr("class", "axis axis-x")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x).tickSize(0))
+                .selectAll("text")
+                .attr("transform", "rotate(-40)")
+                .style("text-anchor", "end")
+                .style("font-size", "12px");
+
+            // y axis
+            g.append("g")
+                .attr("class", "axis axis-y")
+                .call(d3.axisLeft(y).ticks(6).tickFormat(d3.format(".2s")));
+        }
+
+        const sorted = data.sort((a, b) => a.ranking - b.ranking);
+        update(sorted.slice(0, 10));
+
+        d3.select("#filter-button").on("click", function() {
+            const topN = +d3.select("#top-n").property("value");
+            update(topN > 0 ? sorted.slice(0, topN) : sorted);
+        });
+
+    }).catch(err => console.error("Error loading CSV:", err));
+</script>
 </body>
 </html>
